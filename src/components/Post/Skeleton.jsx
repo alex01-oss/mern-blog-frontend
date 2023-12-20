@@ -1,8 +1,6 @@
-import React from "react";
-import Stack from "@mui/material/Stack";
-import Skeleton from "@mui/material/Skeleton";
-
+import { Stack, Skeleton } from "@mui/material";
 import styles from "./Post.module.scss";
+import React from "react";
 
 export const PostSkeleton = () => {
   return (

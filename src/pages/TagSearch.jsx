@@ -1,23 +1,22 @@
 import { fetchPosts, fetchTags, fetchComments } from "../redux/slices/posts";
-import { Tabs, Tab, Grid, useMediaQuery } from "@mui/material";
+import { Grid, useMediaQuery, Typography } from "@mui/material";
 import { Post, TagsBlock, CommentsBlock } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { Tag } from "@mui/icons-material";
+import React from "react";
 
-export const Home = () => {
-  const dispatch = useDispatch();
+export const TagSearch = () => {
   const { posts, tags, comments } = useSelector((state) => state.posts);
   const userData = useSelector((state) => state.auth.data);
   const isMobile = useMediaQuery("(max-width:600px)");
+  const dispatch = useDispatch();
+  const { tag } = useParams();
 
   const isPostLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
   const isCommentsLoading = comments.status === 'loading';
-
-  const [tabValue, setTabValue] = useState(0);
-  const switchNew = () => {setTabValue(0)};
-  const switchPopular = () => {setTabValue(1)};
-
+  
   React.useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchTags());
@@ -26,38 +25,20 @@ export const Home = () => {
 
   return (
     <>
-      <Tabs
-        style = {{ marginBottom: 15 }}
-        value = {tabValue}
-        onChange = {newValue => setTabValue(newValue)}
-        aria-label = "basic tabs example"
-      >
-        <Tab label = "New" value = {0} onClick = {switchNew}/>
-        <Tab label = "Popular" value = {1} onClick = {switchPopular}/>
-      </Tabs>
       <Grid container spacing = {4}>
         <Grid xs = {isMobile ? 12 : 8} item>
-          {isPostLoading ? ([...Array(5)].map((index) => (
+          <div style = {{ marginBottom: '1.5em' }}>
+            <Typography variant = 'h4' style={{color: "inherit"}}>
+              <Tag />
+              {tag}
+            </Typography>
+          </div>
+          {isPostLoading ? ([...Array(5)].map((_, index) => (
               <Post key = {index} isLoading = {true} />
             ))
-          ) : tabValue === 0 ? (
-            posts.items.map((obj) => (
-              <Post
-                id = {obj._id}
-                title = {obj.title}
-                imageUrl = {obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : null}
-                user = {obj.user}
-                createdAt = {obj.createdAt}
-                viewsCount = {obj.viewsCount}
-                commentsCount = {obj.commentsCount}
-                tags = {obj.tags ? obj.tags : null}
-                isEditable = {userData?._id === obj.user._id}
-              />
-            ))
-          ) : tabValue === 1 ? (
+          ) : (
             posts.items
-              .slice()
-              .sort((a, b) => b.viewsCount - a.viewsCount)
+              .filter((post) => post.tags.includes(tag))
               .map((obj) => (
                 <Post
                   id = {obj._id}
@@ -71,7 +52,7 @@ export const Home = () => {
                   isEditable = {userData?._id === obj.user._id}
                 />
               ))
-          ) : null}
+            )}
         </Grid>
         {!isMobile &&
           <Grid xs = {4} item>
@@ -80,8 +61,8 @@ export const Home = () => {
               isLoading = {isTagsLoading}
             />
             <CommentsBlock
-              items={comments.items.map((comment) => ({...comment}))}
-              isLoading={isCommentsLoading}
+              items = {comments.items}
+              isLoading = {isCommentsLoading}
             />
           </Grid>
         }

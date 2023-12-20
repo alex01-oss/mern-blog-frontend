@@ -1,8 +1,5 @@
 .root {
-  background-color: #fff;
   padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 30px;
 }
 
 .inner {
@@ -10,24 +7,40 @@
   justify-content: space-between;
 }
 
+.mobile {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
 .logo {
-  background-color: black;
+  display: flex;
+  align-items: center;
   color: #fff;
   font-weight: 700;
-  line-height: 35px;
   text-transform: uppercase;
-  letter-spacing: 0.15px;
   border-radius: 5px;
-  padding: 0 10px;
   text-decoration: none;
-
-  &:hover {
-    background-color: #4361ee;
-  }
+  padding: 0 10px;
+  background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
+  box-shadow: 0 3px 5px 2px rgba(33, 203, 243, .3);
 }
 
 .buttons {
-  button {
+  color: inherit;
+  button{
     margin-left: 10px;
+    text-decoration: none;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    font-size: 14px;
   }
 }
