@@ -115,7 +115,11 @@ export const AddPost = () => {
           >
             Delete
           </Button>
-          <img className={styles.image} src={`http://localhost:4444${imageUrl}`} alt="uploaded" />
+          <img
+            className={styles.image}
+            src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+            alt="uploaded"
+          />
         </>
       )}
       <br />

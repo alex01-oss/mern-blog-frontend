@@ -97,7 +97,7 @@ export const Registration = () => {
             {avatarUrl ? (
               <>
                 <img
-                  src={`http://localhost:4444${avatarUrl}`}
+                  src={`${process.env.REACT_APP_API_URL}${avatarUrl}`}
                   alt="uploaded"
                   style={{ width: 100, height: 100, borderRadius: "50%" }}
                   onClick={() => inputFileRef.current.click()}
